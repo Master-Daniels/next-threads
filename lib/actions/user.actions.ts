@@ -34,13 +34,15 @@ export async function updateUser({ userId, username, name, image, bio, path }: P
     }
 }
 
-export async function getUser({ userId }: { userId: string | undefined }): Promise<typeof User | void> {
+export async function fetchUser(userId: string) {
     try {
-        await connectToDB();
-        const user: any = await User.findOne({ id: userId });
-        revalidatePath("/");
-        return user;
-    } catch (err) {
-        console.log("From Find User", err);
+        connectToDB();
+
+        return await User.findOne({ id: userId }).populate({
+            path: "communities",
+            // model: Community,
+        });
+    } catch (error: any) {
+        throw new Error(`Failed to fetch user: ${error.message}`);
     }
 }
