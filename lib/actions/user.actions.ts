@@ -25,6 +25,7 @@ export async function updateUser({ userId, username, name, image, bio, path }: P
                 name,
                 bio,
                 image,
+                onboarded: true,
             },
             { upsert: true }
         );
@@ -36,7 +37,7 @@ export async function updateUser({ userId, username, name, image, bio, path }: P
 
 export async function fetchUser(userId: string) {
     try {
-        connectToDB();
+        await connectToDB();
 
         return await User.findOne({ id: userId }).populate({
             path: "communities",

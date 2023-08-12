@@ -33,9 +33,11 @@ interface Props {
 const AccountProfile = ({ user, btnTitle }: Props) => {
     const router = useRouter();
     const pathname = usePathname();
+
     const { startUpload } = useUploadThing("media");
 
     const [files, setFiles] = useState<File[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof UserValidation>>({
         resolver: zodResolver(UserValidation),
@@ -52,13 +54,12 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         const hasImageChanged = isBase64Image(blob);
 
-        console.log(hasImageChanged);
-
         if (hasImageChanged) {
+            setIsLoading(true);
             const imgRes = await startUpload(files);
 
-            if (imgRes && imgRes[0].fileUrl) {
-                values.profile_photo = imgRes[0].fileUrl;
+            if (imgRes && imgRes[0].url) {
+                values.profile_photo = imgRes[0].url;
             }
         }
 
@@ -70,7 +71,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             bio: values.bio,
             image: values.profile_photo,
         });
-
+        setIsLoading(false);
         if (pathname === "/profile/edit") {
             router.back();
         } else {
@@ -105,8 +106,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     control={form.control}
                     name="profile_photo"
                     render={({ field }) => (
-                        <FormItem className="flex items-center gap-4">
-                            <FormLabel className="account-form_image-label">
+                        <FormItem className="flex items-center justify-center gap-4">
+                            <FormLabel className="account-form_image-label cursor-pointer">
                                 {field.value ? (
                                     <Image
                                         src={field.value}
@@ -131,7 +132,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                     type="file"
                                     accept="image/*"
                                     placeholder="Add profile photo"
-                                    className="account-form_image-input"
+                                    className="account-form_image-input hidden"
                                     onChange={(e) => handleImage(e, field.onChange)}
                                 />
                             </FormControl>
@@ -181,7 +182,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     )}
                 />
 
-                <Button type="submit" className="bg-primary-500">
+                <Button type="submit" className="bg-primary-500" disabled={isLoading}>
                     {btnTitle}
                 </Button>
             </form>
