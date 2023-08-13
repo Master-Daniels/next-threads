@@ -5,14 +5,14 @@ import Thread from "../models/Thread.model";
 import User from "../models/User.model";
 import { revalidatePath } from "next/cache";
 
-interface Params {
+interface CreateParams {
     text: string;
     author: string;
     communityId?: string;
     path: string;
 }
 
-export async function createThread({ text, author, communityId, path }: Params) {
+export async function createThread({ text, author, communityId, path }: CreateParams) {
     try {
         await connectToDB();
         const thread = await Thread.create({
@@ -110,8 +110,15 @@ export async function fetchThreadById(threadId: string) {
     }
 }
 
-export async function addCommentToThread(threadId: string, commentText: string, userId: string, path: string) {
-    connectToDB();
+
+interface AddCommentParams {
+    threadId: string;
+    commentText: string;
+    userId: string;
+    path: string;
+}
+export async function addCommentToThread({ threadId, commentText, userId, path }: AddCommentParams) {
+    await connectToDB();
 
     try {
         // Find the original thread by its ID

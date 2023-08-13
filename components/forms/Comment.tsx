@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 
 import { CommentValidation } from "@/lib/validations/thread";
+import { addCommentToThread } from "@/lib/actions/thread.actions";
 
 interface IProps {
     threadId: string;
@@ -29,9 +30,16 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: IProps) => {
         },
     });
 
-  const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-      
-        router.push("/");
+    const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
+        console.log(currentUserId);
+
+        await addCommentToThread({
+            threadId,
+            commentText: values.thread,
+            userId: currentUserId,
+            path: pathname,
+        });
+        form.reset();
     };
 
     return (
@@ -51,11 +59,12 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: IProps) => {
                                     className="object-cover rounded-full"
                                 />
                             </FormLabel>
-                            <FormControl className="border-none bg-transparent">
+                            <FormControl className="border-none flex-1 w-full">
                                 <Input
                                     type="text"
                                     placeholder="Comment..."
-                                    className="no-focus text-light-1 outline-none"
+                                    className="no-focus text-light-1 outline-none bg-transparent"
+                                    autoFocus
                                     {...field}
                                 />
                             </FormControl>
