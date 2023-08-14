@@ -18,6 +18,7 @@ export async function createThread({ text, author, communityId, path }: CreatePa
         const thread = await Thread.create({
             text,
             author,
+            community: communityId,
         });
 
         await User.findByIdAndUpdate(author, {
@@ -109,7 +110,6 @@ export async function fetchThreadById(threadId: string) {
         throw new Error("Unable to fetch thread");
     }
 }
-
 
 interface AddCommentParams {
     threadId: string;

@@ -1,15 +1,31 @@
 import { fetchUserPosts } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import ThreadCard from "../cards/ThreadCard";
+import { fetchCommunityPosts } from "@/lib/actions/community.actions";
 
 interface IProps {
     currentUserId: string;
     accountId: string;
     accountType: string;
 }
-const ThreadsTab = async ({ currentUserId, accountId, accountType }: IProps) => {
-    const results = await fetchUserPosts({ userId: accountId });
+const getResults = async ({ accountType, accountId }: { accountType: string; accountId: string }) => {
+    let results: any;
+
+    if (accountType === "Community") {
+        results = await fetchCommunityPosts(accountId);
+    } else {
+        results = await fetchUserPosts({ userId: accountId });
+    }
+    return results;
+};
+async function ThreadsTab({ currentUserId, accountId, accountType }: IProps) {
+    let results: any;
+    getResults({ accountType, accountId }).then((res) => {
+        results = res;
+    });
+
     if (!results) redirect("/");
+
     return (
         <section className="mt-9 flex flex-col gap-10">
             {results.threads.map((thread: any) => (
@@ -39,6 +55,6 @@ const ThreadsTab = async ({ currentUserId, accountId, accountType }: IProps) => 
             ))}
         </section>
     );
-};
+}
 
 export default ThreadsTab;
