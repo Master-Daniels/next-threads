@@ -23,9 +23,9 @@ const nextConfig = {
                 hostname: "uploadthing.com",
             },
         ],
-        typescript: {
-            ignoreBuildErrors: true,
-        },
+    },
+    typescript: {
+        ignoreBuildErrors: true,
     },
 };
 
