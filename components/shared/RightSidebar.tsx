@@ -1,5 +1,3 @@
-import Community from "@/lib/models/Community.model";
-import User from "@/lib/models/User.model";
 import CommunityCard from "../cards/CommunityCard";
 import UserCard from "../cards/UserCard";
 
@@ -9,7 +7,6 @@ interface IProps {
 }
 
 const RightSidebar: React.FC<IProps> = ({ communities, users }) => {
-    console.log(communities, users);
 
     return (
         <section className="custom-scrollbar rightsidebar">
