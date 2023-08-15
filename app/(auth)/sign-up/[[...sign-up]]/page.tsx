@@ -1,5 +1,9 @@
 import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
-    return <SignUp afterSignUpUrl="/onboarding" />;
+    return (
+        <div className="grid place-content-center h-screen">
+            <SignUp afterSignUpUrl="/onboarding" />;
+        </div>
+    );
 }

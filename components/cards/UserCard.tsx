@@ -27,7 +27,7 @@ const UserCard = ({ id, name, username, image, personType }: IProps) => {
                 </div>
             </div>
             <Button className="user-card_btn" onClick={() => router.push(`/profile/${id}`)}>
-                View Profile
+                View
             </Button>
         </article>
     );

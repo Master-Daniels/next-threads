@@ -18,7 +18,8 @@ const getResults = async ({ accountType, accountId }: { accountType: string; acc
     }
     return results;
 };
-async function ThreadsTab({ currentUserId, accountId, accountType }: IProps) {
+
+function ThreadsTab({ currentUserId, accountId, accountType }: IProps) {
     let results: any;
     getResults({ accountType, accountId }).then((res) => {
         results = res;

@@ -87,7 +87,7 @@ export async function fetchUserPosts({ userId }: { userId: string }) {
 
 interface FetchUsersParams {
     userId: string;
-    searchString: string;
+    searchString?: string;
     pageNumber?: number;
     pageSize?: number;
     order?: SortOrder;
